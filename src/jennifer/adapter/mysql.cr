@@ -113,14 +113,14 @@ module Jennifer
         end.exists?
       end
 
-      def foreign_key_exists?(from_table, to_table = nil, column = nil, name : String? = nil)
+      def foreign_key_exists?(from_table, to_table = nil, column = nil, name : String? = nil) : Bool
         name = self.class.foreign_key_name(from_table, to_table, column, name)
         Query["information_schema.KEY_COLUMN_USAGE", self]
           .where { and(_constraint_name == name, _table_schema == config.db) }
           .exists?
       end
 
-      def with_table_lock(table : String, type : String = "default", &block)
+      def with_table_lock(table : String, type : String = "default", &block : DB::Transaction ->)
         transaction do |t|
           config.logger.debug do
             "MySQL doesn't support manual locking table from prepared statement. " \

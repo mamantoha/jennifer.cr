@@ -335,7 +335,7 @@ module Jennifer
       abstract def default_type_size(name)
       abstract def table_column_count(table)
       abstract def tables_column_count(tables : Array(String))
-      abstract def with_table_lock(table : String, type : String = "default", &block)
+      abstract def with_table_lock(table : String, type : String = "default", &block : DB::Transaction ->)
       abstract def explain(q)
 
       def refresh_materialized_view(name)
